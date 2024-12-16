@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { AccessToken } from "./access-token.entity";
+import { RefreshToken } from './refresh-token.entity';
 
 @Entity()
 export class User {
@@ -13,4 +15,9 @@ export class User {
 
   @Column({ unique: true })
   email: string;
+  @OneToMany(() => AccessToken, accessToken => accessToken.user)
+  accessTokens: AccessToken[];
+
+  @OneToMany(() => RefreshToken, refreshToken => refreshToken.user)
+  refreshTokens: RefreshToken[];
 }
