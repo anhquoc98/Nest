@@ -1,17 +1,26 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+} from 'typeorm';
 import { User } from './user.entity';
 
-@Entity()
+@Entity('access_tokens') // Tên bảng trong DB
 export class AccessToken {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, user => user.accessTokens)
-  user: User;
-
   @Column()
   token: string;
 
-  @Column()
+  @ManyToOne(() => User, (user) => user.accessTokens)
+  user: User;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
   expiresAt: Date;
 }
